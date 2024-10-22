@@ -82,10 +82,10 @@ let playerController = (function(){
 
 })();
 
-Gameboard.playerMove(1, 0);
-Gameboard.playerMove(1, 1);
-Gameboard.playerMove(0, 0)
-Gameboard.playerMove(0, 1)
+// Gameboard.playerMove(1, 0);
+// Gameboard.playerMove(1, 1);
+// Gameboard.playerMove(0, 0)
+// Gameboard.playerMove(0, 1)
 
 
 
