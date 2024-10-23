@@ -15,8 +15,10 @@ function Gameboard(){
     const addPlayerMove = (boardX, boardY, symbol) =>{
         if(!board[boardX][boardY]){
             board[boardX][boardY] = symbol;
+            return true;
         }else{
             console.log("Cell is occupied noob");
+            return false;
         }
 
     };
@@ -29,6 +31,21 @@ function Gameboard(){
 
 function GameController(playerOneName = "Player1", playerTwoName = "Player2"){
     const board = Gameboard();
+    let gameEnd = false;
+    let whosPlayerTurn = 1;
+
+    const winningCombinations = [
+        [ [0, 0], [0, 1], [0, 2] ],
+        [ [1, 0], [1, 1], [1, 2] ],
+        [ [2, 0], [2, 1], [2, 2] ],
+
+        [ [0, 0], [1, 0], [2, 0] ],
+        [ [0, 1], [1, 1], [2, 1] ],
+        [ [0, 2], [1, 2], [2, 2] ],
+
+        [ [0, 0], [1, 1], [2, 2] ],
+        [ [2, 0], [1, 1], [0, 2] ],
+    ];
 
     const players = [
         {
@@ -40,8 +57,6 @@ function GameController(playerOneName = "Player1", playerTwoName = "Player2"){
             symbol: "O",
         }
     ];
-    
-    let whosPlayerTurn = 1;
 
     const getCurrentPlayerTurnPlayerSymbol = () =>{
         return players[whosPlayerTurn - 1].symbol;
@@ -51,35 +66,54 @@ function GameController(playerOneName = "Player1", playerTwoName = "Player2"){
         whosPlayerTurn = whosPlayerTurn === 1 ? 2 : 1;
     };
 
-    const gameEnd = false;
-
     const playerMove = (boardX, boardY) =>{
+        console.log(checkWin());
         if(!gameEnd){
-            board.addPlayerMove(boardX, boardY, getCurrentPlayerTurnPlayerSymbol());
-            switchPlayerTurn();
+            isMoveSuccessful = board.addPlayerMove(boardX, boardY, getCurrentPlayerTurnPlayerSymbol());
+            
+            if(isMoveSuccessful){
+                switchPlayerTurn();
+            }
             console.log(board.getBoard());
             console.log(`Player ${whosPlayerTurn}'s Turn`);
         }
+        else{
+            console.log("Game is over bruh!!!");
+        }
     };
 
-    const getPlayerTurn = () =>{
-        return whosPlayerTurn;
+    const checkWin = () =>{
+        boardState = board.getBoard();
+        for(let i = 0; i < winningCombinations.length; i++){
+            const [a, b, c] = winningCombinations[i];
+            if(
+                boardState[a[0]][a[1]] &&
+                boardState[a[0]][a[1]] === boardState[b[0]][b[1]] &&
+                boardState[a[0]][a[1]] === boardState[c[0]][c[1]]
+            ){
+                gameEnd = true;
+                return `${ boardState[a[0]][a[1]] } winz!`;
+            }
+        }
+        return `no winnar yet :C`;
     };
-
-
 
     return {
-        getPlayerTurn,
         playerMove,
-        getCurrentPlayerTurnPlayerSymbol,
-        board,
     }
 }
 
 const game = GameController();
 
 
-// bug, moves on to next turn even if cell is occupied
 game.playerMove(0, 0);
-game.playerMove(0, 0);
+game.playerMove(0, 1);
+game.playerMove(1, 0);
+game.playerMove(1, 1);
+game.playerMove(2, 0);
+game.playerMove(2, 1);
+game.playerMove(2, 1);
+game.playerMove(2, 1);
+game.playerMove(2, 1);
+
 
