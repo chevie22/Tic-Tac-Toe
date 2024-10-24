@@ -63,7 +63,7 @@ function ShowGame(){
 
     for(let i = 0; i < boardArray.length; i++){
         for(let j = 0; j < boardArray[i].length; j++){
-            let cell = document.createElement("div");
+            let cell = document.createElement("button");
             cell.className = "cell";
             cell.id = `a${i}a${j}`;
             gameContainer.appendChild(cell);
