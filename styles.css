@@ -49,6 +49,14 @@
     background-color: #0c0d19;
   }
 
+  #starsVideo{
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    /* height: 100vh; */
+    z-index: -2;
+  }
+
   #title{
     color: white;
     margin-top: 4rem;
