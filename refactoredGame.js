@@ -75,10 +75,6 @@ function ShowGame(){
         currentPlayerSymbol = gameController.getCurrentPlayerTurnPlayerSymbol();
 
         let target = e.target;
-
-        // if(!gameEnd){
-        //     target.innerHTML = currentPlayerSymbol;
-        // }
         
         coordinatesClicked = e.target.id.split("a").map(Number);
 
@@ -131,28 +127,28 @@ function GameController(playerOneName = "Player1", playerTwoName = "Player2"){
             isMoveSuccessful = Gameboard.addPlayerMove(boardX, boardY, getCurrentPlayerTurnPlayerSymbol());
             
             if(isMoveSuccessful){
+                checkWin();
                 switchPlayerTurn();
                 gameMoves++;
             }
-
             if(gameMoves >= 9){
                 gameEnd = true;
                 console.log("Game Tied!");
             }else{
-                console.log(Gameboard.getBoard());
-                console.log(`Player ${whosPlayerTurn}'s Turn`);
-                checkWin();
+                if(!gameEnd){
+                    console.log(Gameboard.getBoard());
+                    console.log(`${players[whosPlayerTurn - 1].name}'s Turn`);
+                }
             }
         }
         else{
             console.log("Game is over bruh!!!");
         }
-
-        
     };
 
     const checkWin = () =>{
         boardState = Gameboard.getBoard();
+
         for(let i = 0; i < winningCombinations.length; i++){
             const [a, b, c] = winningCombinations[i];
             if(
@@ -160,7 +156,19 @@ function GameController(playerOneName = "Player1", playerTwoName = "Player2"){
                 boardState[a[0]][a[1]] === boardState[b[0]][b[1]] &&
                 boardState[a[0]][a[1]] === boardState[c[0]][c[1]]
             ){
-                console.log(`${ boardState[a[0]][a[1]] } winz!`);
+                const blurDiv = document.createElement("div");
+                blurDiv.id = "transparentScreen";
+                document.body.appendChild(blurDiv);
+
+                const winnerMessage = document.createElement("div");
+                winnerMessage.id = "winnerMessage"
+                winnerMessage.innerHTML = `${players[whosPlayerTurn - 1].name} winz!`;
+
+                document.body.appendChild(winnerMessage);
+
+                winnerMessage.classList.add("fadeIn");
+
+                console.log(`${players[whosPlayerTurn - 1].name} winz!`);
                 gameEnd = true;
             }
         }
